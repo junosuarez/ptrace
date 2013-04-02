@@ -1,0 +1,31 @@
+{
+  "name": "ptrace",
+  "version": "0.1.0",
+  "description": "easily trace execution order of your promise-based program",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "node node_modules/mohca/bin/mocha"
+  },
+  "repository": "git@github.com:jden/ptrace.git",
+  "keywords": [
+    "promises",
+    "trace",
+    "promise",
+    "debug",
+    "log",
+    "console"
+  ],
+  "author": "jden <jason@denizac.org>",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "devDependencies": {
+    "sinon-chai": "~2.3.1",
+    "chai": "~1.5.0",
+    "mocha": "~1.8.2",
+    "sinon": "~1.6.0",
+    "q": "~0.9.2"
+  }
+}
