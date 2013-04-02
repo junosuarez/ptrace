@@ -9,8 +9,9 @@ var ptrace = require('../index')
 describe('ptrace', function () {
   it('invokes the function with args', function (done) {
     var fn = sinon.stub().returns(Q.resolve())
+    var fn2 = ptrace('foo', fn)
 
-    ptrace('foo', fn, 'baz', 543).then(function () {
+    fn2('baz', 543).then(function () {
       fn.should.have.been.calledWithExactly('baz', 543)
     }).then(done, done)
 
@@ -18,8 +19,9 @@ describe('ptrace', function () {
 
   it('invokes the function with no args', function (done) {
     var fn = sinon.stub().returns(Q.resolve())
+    var fn2 = ptrace('foo', fn)
 
-    ptrace('foo', fn).then(function () {
+    fn2().then(function () {
       fn.should.have.been.called
     }).then(done, done)
 
@@ -31,8 +33,9 @@ describe('ptrace', function () {
 
     var fn = function () { return Q.resolve() }
     ptrace.log = sinon.spy()
+    var fn2 = ptrace('foo', fn)
 
-    ptrace('foo', fn).then(function () {
+    fn2().then(function () {
       ptrace.log.should.have.been.calledTwice
       ptrace.log.firstCall.args.should.match(/invoking/)
       ptrace.log.secondCall.args.should.match(/resolved/)
@@ -47,7 +50,8 @@ describe('ptrace', function () {
     var fn = function () { return Q.reject() }
     ptrace.log = sinon.spy()
 
-    ptrace('foo', fn).then(null, function () {
+    var fn2 = ptrace('foo', fn)
+    fn2().then(null, function () {
       ptrace.log.should.have.been.calledTwice
       ptrace.log.firstCall.args.should.match(/invoking/)
       ptrace.log.secondCall.args.should.match(/rejected/)

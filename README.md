@@ -7,23 +7,29 @@ easily trace execution order of your promise-based program
       return minq.from('users').byId(userId).expect().one()
     }
 
+    var ptrace = require('ptrace')
+
     // pass a label, a promise-returning function, and arguments:
-    ptrace('getUser', getUser, 23).then(function (user) {
-      // do stuff
-    })
+    getUser = ptrace('getUser', getUser)
+
+    [12,23,25].map(getUser)
 
 Console output:
 
-    1 invoking getUser ( 23 )
-    1 resolved {id: 23, name: 'jden' }
+    1 invoking getUser ( 12 )
+    2 invoking getUser ( 23 )
+    3 invoking getUser ( 25 )
+    1 resolved {_id: 12, name: 'ben'}
+    2 resolved {_id: 23, name: 'jden' }
+    3 resolved {_id: 25, name: 'turing' }
 
 ## api
 
 using [jsig notation](https://github.com/jden/jsig)
 
-### `ptrace(stepName: String, fn: () => Promise, ...args: Value) => Promise`
+### `ptrace(stepName: String, fn: () => Promise, ...args: Value) => () => Promise`
 trace invocations of a promise-returning function,
-logging messages on invocation and resolution/rejection
+logging messages on invocation and resolution/rejection. Decorates the Promise-returning function and adds tracing to each invocation. Use this new function like you would have before.
 
 ### `ptrace.log`
 
